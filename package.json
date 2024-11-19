@@ -10,12 +10,18 @@
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "fmt": "prettier --write ./src",
-    "test": "vitest"
+    "test": "vitest",
+    "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "clean": "npx rimraf node_modules dist logs"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^7.2.0",
     "@hono/node-server": "^1.13.7",
     "@hono/zod-openapi": "^0.17.1",
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0",
     "@scalar/hono-api-reference": "^0.5.159",
     "dotenv": "^16.4.5",
     "dotenv-expand": "^12.0.0",
@@ -34,6 +40,7 @@
     "@antfu/eslint-config": "^3.9.1",
     "@types/node": "^22.9.0",
     "cross-env": "^7.0.3",
+    "drizzle-kit": "^0.28.1",
     "eslint": "^9.15.0",
     "eslint-plugin-drizzle": "^0.2.3",
     "eslint-plugin-format": "^0.1.2",

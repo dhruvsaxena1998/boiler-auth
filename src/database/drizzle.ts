@@ -24,4 +24,5 @@ export const database = drizzle({
   logger: new QueryLogger(),
   mode: "default",
   schema,
+  casing: "snake_case",
 });
