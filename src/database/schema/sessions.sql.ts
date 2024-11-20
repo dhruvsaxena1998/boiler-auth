@@ -1,21 +1,25 @@
 import type { z } from "@hono/zod-openapi";
 
+import dayjs from "dayjs";
 import { datetime, int, mysqlTable, text } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-import { users } from "./users.sql";
+import { usersTable } from "./users.sql";
 
-export const sessions = mysqlTable("sessions", {
+export const sessionsTable = mysqlTable("sessions", {
   id: int({ unsigned: true }).primaryKey().autoincrement(),
   token: text().notNull(),
   user_id: int({ unsigned: true })
-    .references(() => users.id)
+    .references(() => usersTable.id)
     .notNull(),
   expires: datetime().notNull(),
+  created_at: datetime().$default(() => dayjs().toDate()),
 });
 
-export const selectSessionsSchema = createSelectSchema(sessions);
+export const selectSessionsSchema = createSelectSchema(sessionsTable).omit({
+  created_at: true,
+});
 export type SelectSessionsSchema = z.infer<typeof selectSessionsSchema>;
 
-export const insertSessionsSchema = createInsertSchema(sessions);
+export const insertSessionsSchema = createInsertSchema(sessionsTable);
 export type InsertSessionsSchema = z.infer<typeof insertSessionsSchema>;

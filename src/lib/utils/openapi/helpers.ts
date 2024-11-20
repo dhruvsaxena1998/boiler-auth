@@ -108,12 +108,8 @@ export function createErrorSchema<T extends string = "">(example?: T) {
 }
 
 export function createSuccessSchema<T extends ZodSchema>(schema: T) {
-  const example = schema?._def?.openapi?.metadata?.example;
-
   return z.object({
     success: z.boolean().openapi({ example: true }),
-    data: schema?.openapi({
-      example,
-    }),
+    data: schema,
   });
 }

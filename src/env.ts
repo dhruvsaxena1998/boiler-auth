@@ -6,12 +6,16 @@ import path from "node:path";
 import { cwd, env } from "node:process";
 import { z } from "zod";
 
-expand(config({
-  path: path.resolve(cwd(), env.NODE_ENV === "test" ? ".env.test" : ".env"),
-}));
+expand(
+  config({
+    path: path.resolve(cwd(), env.NODE_ENV === "test" ? ".env.test" : ".env"),
+  }),
+);
 
 const EnvSchema = z.object({
-  NODE_ENV: z.enum(["dev", "stage", "uat", "preprod", "prod", "test"]).default("dev"),
+  NODE_ENV: z
+    .enum(["dev", "stage", "uat", "preprod", "prod", "test"])
+    .default("dev"),
 
   SERVER_PORT: z.coerce.number().default(3000),
 
@@ -24,6 +28,9 @@ const EnvSchema = z.object({
   DB_USER: z.string(),
   DB_PASS: z.string(),
   DB_NAME: z.string(),
+
+  // Defaults to 15 minutes
+  SESSION_EXPIRY_MINUTES: z.coerce.number().default(15),
 });
 
 export type ENV = z.infer<typeof EnvSchema>;

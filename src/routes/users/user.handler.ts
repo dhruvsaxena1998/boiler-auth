@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import type { AppRouteHandler } from "@/lib/@types/app";
 
 import { database } from "@/database/drizzle";
-import { users } from "@/database/schema/users.sql";
+import { usersTable } from "@/database/schema/users.sql";
 import * as HTTPStatusCodes from "@/lib/constants/http-status-codes";
 
 import type {
@@ -18,7 +18,7 @@ export const CreateUserHandler: AppRouteHandler<CreateUserRoute> = async (
   const json = ctx.req.valid("json");
 
   const [result] = await database
-    .insert(users)
+    .insert(usersTable)
     .values({
       name: json.name,
       email: json.email,
@@ -42,8 +42,8 @@ export const GetUserByIDHandler: AppRouteHandler<GetUserByIDRoute> = async (
 
   const [result] = await database
     .select()
-    .from(users)
-    .where(eq(users.id, id))
+    .from(usersTable)
+    .where(eq(usersTable.id, id))
     .limit(1);
 
   if (!result) {

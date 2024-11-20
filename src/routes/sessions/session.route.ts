@@ -1,35 +1,40 @@
-import { createRoute, z } from "@hono/zod-openapi";
+import { createRoute } from "@hono/zod-openapi";
 
-import { selectSessionsSchema } from "@/database/schema/sessions.sql";
-import { OK, UNPROCESSABLE_ENTITY } from "@/lib/constants/http-status-codes";
 import {
+  INTERNAL_SERVER_ERROR,
+  OK,
+  UNPROCESSABLE_ENTITY,
+} from "@/lib/constants/http-status-codes";
+import {
+  createErrorSchema,
   createSuccessSchema,
   createValidationErrorSchema,
   jsonContent,
 } from "@/lib/utils/openapi/helpers";
 
+import { GenerateSessionSchema, SelectSessionSchema } from "./session.dto";
+
 export const tags = ["Sessions"];
 
-const CreateSessionRequestBody = z
-  .object({
-    user_id: z.coerce.number(),
-  })
-  .openapi({ example: { user_id: 1 } });
 export const CreateSession = createRoute({
   path: "/sessions",
   method: "post",
   tags,
   request: {
-    body: jsonContent(CreateSessionRequestBody, "Request Body"),
+    body: jsonContent(GenerateSessionSchema, "Request Body"),
   },
   responses: {
     [OK]: jsonContent(
-      createSuccessSchema(selectSessionsSchema),
+      createSuccessSchema(SelectSessionSchema),
       "Created Session",
     ),
     [UNPROCESSABLE_ENTITY]: jsonContent(
-      createValidationErrorSchema(CreateSessionRequestBody),
+      createValidationErrorSchema(GenerateSessionSchema),
       "Validation Error(s)",
+    ),
+    [INTERNAL_SERVER_ERROR]: jsonContent(
+      createErrorSchema("Something went wrong!"),
+      "Something went wrong!",
     ),
   },
 });

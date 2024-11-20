@@ -1,2 +1,2 @@
-export { sessions } from "./sessions.sql";
-export { users } from "./users.sql";
+export { sessionsTable as sessions } from "./sessions.sql";
+export { usersTable as users } from "./users.sql";
