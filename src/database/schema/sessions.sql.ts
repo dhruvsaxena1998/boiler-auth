@@ -1,14 +1,19 @@
 import type { z } from "@hono/zod-openapi";
 
 import dayjs from "dayjs";
-import { datetime, int, mysqlTable, text } from "drizzle-orm/mysql-core";
+import {
+  datetime,
+  int,
+  mysqlTable,
+  varchar,
+} from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { usersTable } from "./users.sql";
 
 export const sessionsTable = mysqlTable("sessions", {
   id: int({ unsigned: true }).primaryKey().autoincrement(),
-  token: text().notNull(),
+  hashed_token: varchar({ length: 128 }).notNull().unique(),
   user_id: int({ unsigned: true })
     .references(() => usersTable.id)
     .notNull(),

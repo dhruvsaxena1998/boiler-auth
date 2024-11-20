@@ -1,9 +1,11 @@
 CREATE TABLE `sessions` (
 	`id` int unsigned AUTO_INCREMENT NOT NULL,
-	`token` text NOT NULL,
+	`hashed_token` varchar(128) NOT NULL,
 	`user_id` int unsigned NOT NULL,
 	`expires` datetime NOT NULL,
-	CONSTRAINT `sessions_id` PRIMARY KEY(`id`)
+	`created_at` datetime,
+	CONSTRAINT `sessions_id` PRIMARY KEY(`id`),
+	CONSTRAINT `sessions_hashed_token_unique` UNIQUE(`hashed_token`)
 );
 --> statement-breakpoint
 CREATE TABLE `users` (

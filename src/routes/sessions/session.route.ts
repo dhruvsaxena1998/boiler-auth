@@ -1,4 +1,4 @@
-import { createRoute } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
 
 import {
   INTERNAL_SERVER_ERROR,
@@ -39,3 +39,16 @@ export const CreateSession = createRoute({
   },
 });
 export type CreateSessionRoute = typeof CreateSession;
+
+export const ValidateSession = createRoute({
+  path: "/sessions/validate",
+  method: "post",
+  tags,
+  request: {},
+  responses: {
+    [OK]: jsonContent(
+      createSuccessSchema(SelectSessionSchema),
+      "Validated Session",
+    ),
+  },
+});

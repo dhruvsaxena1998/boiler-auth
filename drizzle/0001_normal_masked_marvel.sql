@@ -1,1 +1,0 @@
-ALTER TABLE `sessions` ADD `created_at` datetime DEFAULT NOW();

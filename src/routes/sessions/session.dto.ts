@@ -19,6 +19,17 @@ export const SelectSessionSchema = selectSessionsSchema.openapi({
     id: 1,
     user_id: 1,
     expires: dayjs().toDate(),
-    token: "token",
+    hashed_token: "token",
   },
 });
+
+export const ValidateSessionSchema = z
+  .object({
+    token: z.string(),
+  })
+  .openapi({
+    example: {
+      token: "token",
+    },
+  });
+export type ValidateSessionDTO = z.infer<typeof ValidateSessionSchema>;

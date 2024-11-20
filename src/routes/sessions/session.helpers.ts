@@ -14,6 +14,6 @@ export function generateToken() {
   return encodeBase32LowerCaseNoPadding(bytes);
 }
 
-export function generateSessionId(token: string) {
+export function generateTokenHash(token: string) {
   return encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 }
