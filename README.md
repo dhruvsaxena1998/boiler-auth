@@ -1,11 +1,11 @@
-## NodeJS Typescript Starter
+# Auth
 
 ## Documentation
 
-- [Libraries](https://github.com/dhruvsaxena1998/node-typescript-starter#libraries)
-- [Features](https://github.com/dhruvsaxena1998/node-typescript-starter#features)
-- [Pre requisite](https://github.com/dhruvsaxena1998/node-typescript-starter#pre-reqs)
-- [Getting Started](https://github.com/dhruvsaxena1998/node-typescript-starter#getting-started)
+- [Libraries](#libraries)
+- [Features](#features)
+- [Pre requisite](#pre-reqs)
+- [Getting Started](#getting-started)
 
 ## Libraries
 
@@ -19,21 +19,17 @@
 
 ## Features
 
-- Full Typesafety with [Typescript](https://www.typescriptlang.org/)
-- Opinionated Structure
-  - Clear and organized directory structure.
-  - Seperations of routes and handlers
-- Validations
-- Database Integration
-- OPENAPI Spec Client Integrated
-- Error Handling
-- File stream Logging
-- Testing
-- Developer Experience
-  - Hot Reloading
-  - Linting and Code Formatting
-
-All pre-configured or minimum configuration required\*
+| Feature                      | Progress   |
+| ---------------------------- | ---------- |
+| Generate and Manage Sessions | Pending ⚠️ |
+| Basic Authentication         | Pending ⚠️ |
+| Email and Password Auth      | Pending ⚠️ |
+| Email and Password - 2FA     | Pending ⚠️ |
+| Magic Link                   | Pending ⚠️ |
+| Google OAuth2                | Pending ⚠️ |
+| Github OAuth2                | Pending ⚠️ |
+| Rate Limiting                | Pending ⚠️ |
+| Throttling                   | Pending ⚠️ |
 
 ## Pre-reqs
 
@@ -43,19 +39,9 @@ All pre-configured or minimum configuration required\*
 
 ## Getting Started
 
-### Clone the Template
+### Clone the Repository
 
-1. Click the "Use this template" button: On the top-right of the repository's page, you'll see a "Use this template" button. Click it.
-
-2. Fill in repository details: You'll be prompted to give your new repository a name and set it as public or private. After that, click "Create repository from template."
-
-3. Clone the new repository: Once the repository is created, clone it locally
-
-```bash
-git clone https://github.com/your-username/your-new-repo.git
-```
-
-4. Install Dependencies
+1. Install Dependencies
 
 ```bash
 # recommended (pnpm)
