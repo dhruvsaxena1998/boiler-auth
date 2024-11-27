@@ -3,6 +3,7 @@ import { createRoute, z } from "@hono/zod-openapi";
 import {
   INTERNAL_SERVER_ERROR,
   OK,
+  UNAUTHORIZED,
   UNPROCESSABLE_ENTITY,
 } from "@/lib/constants/http-status-codes";
 import {
@@ -12,13 +13,19 @@ import {
   jsonContent,
 } from "@/lib/utils/openapi/helpers";
 
-import { GenerateSessionSchema, SelectSessionSchema } from "./session.dto";
+import {
+  GenerateSessionSchema,
+  SelectSessionSchema,
+  ValidatedSessionSchema,
+  ValidateSessionSchema,
+} from "./session.dto";
 
 export const tags = ["Sessions"];
 
 export const CreateSession = createRoute({
   path: "/sessions",
   method: "post",
+  description: "Create a new session",
   tags,
   request: {
     body: jsonContent(GenerateSessionSchema, "Request Body"),
@@ -42,13 +49,25 @@ export type CreateSessionRoute = typeof CreateSession;
 
 export const ValidateSession = createRoute({
   path: "/sessions/validate",
-  method: "post",
+  method: "get",
+  description: "Validate Session",
   tags,
-  request: {},
+  request: {
+    headers: ValidateSessionSchema,
+  },
   responses: {
     [OK]: jsonContent(
-      createSuccessSchema(SelectSessionSchema),
+      createSuccessSchema(ValidatedSessionSchema),
       "Validated Session",
+    ),
+    [UNPROCESSABLE_ENTITY]: jsonContent(
+      createValidationErrorSchema(ValidateSessionSchema),
+      "Validation Error(s)",
+    ),
+    [UNAUTHORIZED]: jsonContent(
+      createErrorSchema("Unauthorized"),
+      "Unauthorized",
     ),
   },
 });
+export type ValidateSessionRoute = typeof ValidateSession;

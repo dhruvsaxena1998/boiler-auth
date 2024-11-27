@@ -19,17 +19,47 @@ export const SelectSessionSchema = selectSessionsSchema.openapi({
     id: 1,
     user_id: 1,
     expires: dayjs().toDate(),
-    hashed_token: "token",
+    token: "token",
   },
 });
 
 export const ValidateSessionSchema = z
   .object({
-    token: z.string(),
+    authorization: z.string().startsWith("Bearer "),
   })
   .openapi({
     example: {
-      token: "token",
+      authorization: "Bearer <token>",
     },
   });
 export type ValidateSessionDTO = z.infer<typeof ValidateSessionSchema>;
+
+export const ValidatedSessionSchema = z
+  .object({
+    message: z.string(),
+    session: selectSessionsSchema.omit({
+      token: true,
+    }),
+  })
+  .openapi({
+    example: {
+      message: "Session validated successfully!",
+      session: {
+        id: 1,
+        user_id: 1,
+        expires: dayjs().toDate(),
+      },
+    },
+  });
+export type ValidatedSessionDTO = z.infer<typeof ValidatedSessionSchema>;
+
+export const InvalidateSessionSchema = z
+  .object({
+    session_id: z.coerce.number(),
+  })
+  .openapi({
+    example: {
+      session_id: 1,
+    },
+  });
+export type InvalidateSessionDTO = z.infer<typeof InvalidateSessionSchema>;

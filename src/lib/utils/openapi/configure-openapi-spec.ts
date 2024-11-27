@@ -22,7 +22,7 @@ function configureOpenApiSpec(app: AppOpenAPI, info: {
     "/reference",
     apiReference({
       theme: "saturn",
-      layout: "classic",
+      layout: "modern",
       defaultHttpClient: {
         clientKey: "fetch",
         targetKey: "javascript",

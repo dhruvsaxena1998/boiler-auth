@@ -1,5 +1,4 @@
-import type { z } from "@hono/zod-openapi";
-
+import { z } from "@hono/zod-openapi";
 import dayjs from "dayjs";
 import {
   datetime,
@@ -21,9 +20,14 @@ export const sessionsTable = mysqlTable("sessions", {
   created_at: datetime().$default(() => dayjs().toDate()),
 });
 
-export const selectSessionsSchema = createSelectSchema(sessionsTable).omit({
-  created_at: true,
-});
+export const selectSessionsSchema = createSelectSchema(sessionsTable)
+  .extend({
+    token: z.string(),
+  })
+  .omit({
+    created_at: true,
+    hashed_token: true,
+  });
 export type SelectSessionsSchema = z.infer<typeof selectSessionsSchema>;
 
 export const insertSessionsSchema = createInsertSchema(sessionsTable);

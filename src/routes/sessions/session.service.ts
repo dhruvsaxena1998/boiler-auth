@@ -15,7 +15,11 @@ import {
   UNAUTHORIZED,
 } from "@/lib/constants/http-status-codes";
 
-import type { GenerateSessionDTO, ValidateSessionDTO } from "./session.dto";
+import type {
+  GenerateSessionDTO,
+  InvalidateSessionDTO,
+  ValidateSessionDTO,
+} from "./session.dto";
 
 import { generateToken, generateTokenHash } from "./session.helpers";
 
@@ -58,7 +62,8 @@ export async function GenerateSession(dto: GenerateSessionDTO) {
 
 export async function ValidateSession(dto: ValidateSessionDTO) {
   // Generate a hash of the provided token for secure comparison
-  const hashed_token = generateTokenHash(dto.token);
+  const [, token] = dto.authorization.split("Bearer ");
+  const hashed_token = generateTokenHash(token);
 
   const sessions = await database
     .select({
@@ -83,9 +88,9 @@ export async function ValidateSession(dto: ValidateSessionDTO) {
 
   // Check if the session has expired
   if (dayjs().isAfter(dayjs(session.expires))) {
-    await database
-      .delete(sessionsTable)
-      .where(eq(sessionsTable.id, session.id));
+    await InvalidateSession({
+      session_id: session.id,
+    });
 
     return err({
       message: "Session expired!",
@@ -106,9 +111,22 @@ export async function ValidateSession(dto: ValidateSessionDTO) {
       })
       .where(eq(sessionsTable.id, session.id));
 
+    const { expires, id, user_id } = session;
+
     return ok({
-      session,
+      session: { id, user_id, expires },
       code: OK,
     });
   }
+
+  return err({
+    message: "Something went wrong!",
+    code: UNAUTHORIZED,
+  });
+}
+
+export async function InvalidateSession(dto: InvalidateSessionDTO) {
+  await database
+    .delete(sessionsTable)
+    .where(eq(sessionsTable.id, dto.session_id));
 }
